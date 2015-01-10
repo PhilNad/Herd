@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Headers\Arduino.h" />
+    <ClInclude Include="Headers\arm_common_tables.h" />
+    <ClInclude Include="Headers\arm_math.h" />
+    <ClInclude Include="Headers\AudioStream.h" />
+    <ClInclude Include="Headers\avr_emulation.h" />
+    <ClInclude Include="Headers\avr_functions.h" />
+    <ClInclude Include="Headers\binary.h" />
+    <ClInclude Include="Headers\Client.h" />
+    <ClInclude Include="Headers\core_cm4.h" />
+    <ClInclude Include="Headers\core_cm4_simd.h" />
+    <ClInclude Include="Headers\core_cmInstr.h" />
+    <ClInclude Include="Headers\core_id.h" />
+    <ClInclude Include="Headers\core_pins.h" />
+    <ClInclude Include="Headers\elapsedMillis.h" />
+    <ClInclude Include="Headers\HardwareSerial.h" />
+    <ClInclude Include="Headers\IntervalTimer.h" />
+    <ClInclude Include="Headers\IPAddress.h" />
+    <ClInclude Include="Headers\keylayouts.h" />
+    <ClInclude Include="Headers\math_helper.h" />
+    <ClInclude Include="Headers\mk20dx128.h" />
+    <ClInclude Include="Headers\new.h" />
+    <ClInclude Include="Headers\pins_arduino.h" />
+    <ClInclude Include="Headers\Print.h" />
+    <ClInclude Include="Headers\Printable.h" />
+    <ClInclude Include="Headers\Server.h" />
+    <ClInclude Include="Headers\SPIFIFO.h" />
+    <ClInclude Include="Headers\Stream.h" />
+    <ClInclude Include="Headers\Udp.h" />
+    <ClInclude Include="Headers\usb_desc.h" />
+    <ClInclude Include="Headers\usb_dev.h" />
+    <ClInclude Include="Headers\usb_flightsim.h" />
+    <ClInclude Include="Headers\usb_joystick.h" />
+    <ClInclude Include="Headers\usb_keyboard.h" />
+    <ClInclude Include="Headers\usb_mem.h" />
+    <ClInclude Include="Headers\usb_midi.h" />
+    <ClInclude Include="Headers\usb_mouse.h" />
+    <ClInclude Include="Headers\usb_names.h" />
+    <ClInclude Include="Headers\usb_rawhid.h" />
+    <ClInclude Include="Headers\usb_seremu.h" />
+    <ClInclude Include="Headers\usb_serial.h" />
+    <ClInclude Include="Headers\WCharacter.h" />
+    <ClInclude Include="Headers\WConstants.h" />
+    <ClInclude Include="Headers\wiring.h" />
+    <ClInclude Include="Headers\wiring_private.h" />
+    <ClInclude Include="Headers\WProgram.h" />
+    <ClInclude Include="Headers\WString.h" />
+    <ClInclude Include="Sources\Board.h" />
+    <ClInclude Include="Sources\Commands.h" />
+    <ClInclude Include="Sources\Communication.h" />
+    <ClInclude Include="Sources\DynSched.h" />
+    <ClInclude Include="Sources\IRSensor.h" />
+    <ClInclude Include="Sources\Motion.h" />
+    <ClInclude Include="Sources\Scheduler.h" />
+    <ClInclude Include="Sources\XBeeDM.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sources\Board.cpp" />
+    <ClCompile Include="Sources\Commands.cpp" />
+    <ClCompile Include="Sources\Communication.cpp" />
+    <ClCompile Include="Sources\DynSched.cpp" />
+    <ClCompile Include="Sources\IRSensor.cpp" />
+    <ClCompile Include="Sources\main.c" />
+    <ClCompile Include="Sources\Motion.cpp" />
+    <ClCompile Include="Sources\Scheduler.cpp" />
+    <ClCompile Include="Sources\XBeeDM.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04B145FE-E36C-489D-B0F5-8FA2BE6065F5}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>nmake.exe all</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>nmake.exe clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>nmake.exe rebuil</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <IncludePath>$(ProjectDir)\Headers\</IncludePath>
+    <ReferencePath />
+    <LibraryPath />
+    <LibraryWPath />
+    <SourcePath>$(ProjectDir)\Sources\</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>nmake.exe all</NMakeBuildCommandLine>
+    <NMakeCleanCommandLine>nmake.exe clean</NMakeCleanCommandLine>
+    <NMakeReBuildCommandLine>nmake.exe rebuil</NMakeReBuildCommandLine>
+    <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
