@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Decisions.h" />
     <ClInclude Include="Headers\Arduino.h" />
     <ClInclude Include="Headers\arm_common_tables.h" />
     <ClInclude Include="Headers\arm_math.h" />
@@ -67,6 +68,7 @@
     <ClInclude Include="Sources\XBeeDM.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Decisions.cpp" />
     <ClCompile Include="Sources\Board.cpp" />
     <ClCompile Include="Sources\Commands.cpp" />
     <ClCompile Include="Sources\Communication.cpp" />
