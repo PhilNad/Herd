@@ -4,7 +4,7 @@
 # Built for NMake in the context of a Microsoft Visual Studio 2013 environment
 
 # The name of your project (used to name the compiled .hex file)
-TARGET = swarmAlpha
+TARGET = herd
 
 # The path to the project base directory
 PROJECT_PATH = $(MAKEDIR)
@@ -19,7 +19,7 @@ OBJECTSPATH = $(PROJECT_PATH)\Objects
 BINSPATH = $(PROJECT_PATH)\Bin
 
 # Base path location for all utilities and absolute path for Teensy Loader, teensy_post_compile and teensy_reboot
-TOOLSPATH = $(PROJECT_PATH)\Tools
+TOOLSPATH = $(PROJECT_PATH)\..\..\Tools
 
 # Absolute path to base directory for all header files
 INCLUDEPATH = $(PROJECT_PATH)\Headers

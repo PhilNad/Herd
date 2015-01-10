@@ -61,6 +61,7 @@
     <ClInclude Include="Sources\Board.h" />
     <ClInclude Include="Sources\Commands.h" />
     <ClInclude Include="Sources\Communication.h" />
+    <ClInclude Include="Sources\Decisions.h" />
     <ClInclude Include="Sources\DynSched.h" />
     <ClInclude Include="Sources\IRSensor.h" />
     <ClInclude Include="Sources\Motion.h" />
@@ -72,6 +73,7 @@
     <ClCompile Include="Sources\Board.cpp" />
     <ClCompile Include="Sources\Commands.cpp" />
     <ClCompile Include="Sources\Communication.cpp" />
+    <ClCompile Include="Sources\Decisions.cpp" />
     <ClCompile Include="Sources\DynSched.cpp" />
     <ClCompile Include="Sources\IRSensor.cpp" />
     <ClCompile Include="Sources\main.c" />
