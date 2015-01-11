@@ -65,7 +65,6 @@
     <ClInclude Include="Sources\DynSched.h" />
     <ClInclude Include="Sources\IRSensor.h" />
     <ClInclude Include="Sources\Motion.h" />
-    <ClInclude Include="Sources\Scheduler.h" />
     <ClInclude Include="Sources\XBeeDM.h" />
   </ItemGroup>
   <ItemGroup>
@@ -77,7 +76,6 @@
     <ClCompile Include="Sources\IRSensor.cpp" />
     <ClCompile Include="Sources\main.c" />
     <ClCompile Include="Sources\Motion.cpp" />
-    <ClCompile Include="Sources\Scheduler.cpp" />
     <ClCompile Include="Sources\XBeeDM.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
