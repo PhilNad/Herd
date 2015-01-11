@@ -5,6 +5,19 @@
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
 
+//These definitions allows us to write debug and release code without any overhead
+#ifdef DEBUG_VERBOSE
+
+#define DEBUG_SP(x)		Serial.print(x)
+#define DEBUG_SPL(x)	Serial.println(x)
+
+#else 
+
+#define DEBUG_SP(x)		[]{}
+#define DEBUG_SPL(x)	[]{}
+
+#endif
+
 //Maximum number of nodes in the list
 #define RX_DATA_LIST_MAXIMUM 100
 

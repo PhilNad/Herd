@@ -8,6 +8,9 @@ README: For an unknown reason, the Teensyduino generated objects files are worki
 
 //WARNING: CONSIDER ALL HEADERS INCLUDED IN THIS PROJECT TO BE MODIFIED SPECIFICALLY FOR THE HERD PROJECT
 
+//This define permits verbose information on the Serial interface
+#define DEBUG_VERBOSE
+
 //The header that will include them all.
 #include "Arduino.h"
 //Xbee DigiMesh

@@ -103,7 +103,7 @@ void correctDelimiter(int sensor, int reading){
 
 	// FOR GRAPHING PURPOSES
 	/*if (sensor == FRONT_SENSOR){
-		Serial.print(reading); Serial.print(","); Serial.print(delimiter); Serial.print(","); Serial.print(irMinimum[sensor]); Serial.print(","); Serial.println(irMaximum[sensor]);
+		DEBUG_SP(reading); DEBUG_SP(","); DEBUG_SP(delimiter); DEBUG_SP(","); DEBUG_SP(irMinimum[sensor]); DEBUG_SP(","); DEBUG_SPL(irMaximum[sensor]);
 	}*/
 
 }

@@ -47,12 +47,12 @@ void broadcastPositionCommand(Rx_data data){
 		new_bot.position	= bot_position;
 		new_bot.target		= target_position;
 		bot_index			= addBot(new_bot);
-		Serial.print("NEW BOT with mac: "); printLLNumber(macAddr, HEX); Serial.print(" at position "); Serial.print(bot_position.x); Serial.print(":"); Serial.println(bot_position.y);
+		DEBUG_SP("NEW BOT with mac: "); printLLNumber(macAddr, HEX); DEBUG_SP(" at position "); DEBUG_SP(bot_position.x); DEBUG_SP(":"); DEBUG_SPL(bot_position.y);
 	}else{
 		//Make the case that was occupied by the bot, free
 		Case c = getBotCase(bot_index);
 		setCaseFree(c);
-		Serial.print("New position for bot="); Serial.print(bot_index); Serial.print(" at "); Serial.print(bot_position.x); Serial.print(":"); Serial.println(bot_position.y);
+		DEBUG_SP("New position for bot="); DEBUG_SP(bot_index); DEBUG_SP(" at "); DEBUG_SP(bot_position.x); DEBUG_SP(":"); DEBUG_SPL(bot_position.y);
 	}
 	
 	if (bot_index != -1){
@@ -65,7 +65,7 @@ void broadcastPositionCommand(Rx_data data){
 		setBotTarget(bot_index, target_position);
 	}
 	else{
-		Serial.println("ERROR: Created bot cannot be found.");
+		DEBUG_SPL("ERROR: Created bot cannot be found.");
 	}
 }
 
@@ -83,10 +83,10 @@ void demandPositionCommand(){
 	int result = sprintf((char*)payload, "POS %02d%02d %02d%02d", myself.position.x, myself.position.y, myself.target.x, myself.target.y);
 	
 	if (result != 13){
-		Serial.print("Failed to send correct POS command. Returned : "); Serial.println(result);
+		DEBUG_SP("Failed to send correct POS command. Returned : "); DEBUG_SPL(result);
 	}
 	else{
-		Serial.print("Sending our position: "); Serial.println((char*)payload);
+		DEBUG_SP("Sending our position: "); DEBUG_SPL((char*)payload);
 		sendDataBroadcast(payload, 13);
 	}
 }
@@ -110,5 +110,5 @@ void newTargetCommand(Rx_data data){
 	if (free_target_index < 0){
 		addTarget(target_position);
 	}
-	Serial.print("Discovered target at "); Serial.print(target_position.x); Serial.print(":"); Serial.println(target_position.y);
+	DEBUG_SP("Discovered target at "); DEBUG_SP(target_position.x); DEBUG_SP(":"); DEBUG_SPL(target_position.y);
 }

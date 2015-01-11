@@ -160,7 +160,7 @@ void comGetPacket(){
 			//Add the structure to the list.
 			addRxData(newRxData);
 
-			//Serial.print("Received "); Serial.print(dataLen); Serial.print(" bytes from "); printLLNumber(macAddr, HEX); Serial.println();
+			//DEBUG_SP("Received "); DEBUG_SP(dataLen); DEBUG_SP(" bytes from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
 			
 			break;
 		}
@@ -173,7 +173,7 @@ void printLLNumber(unsigned long long n, uint8_t base)
 	unsigned long long i = 0;
 
 	if (n == 0) {
-		Serial.print('0');
+		DEBUG_SP('0');
 		return;
 	}
 
@@ -183,7 +183,7 @@ void printLLNumber(unsigned long long n, uint8_t base)
 	}
 
 	for (; i > 0; i--)
-		Serial.print((char)(buf[i - 1] < 10 ?
+		DEBUG_SP((char)(buf[i - 1] < 10 ?
 		'0' + buf[i - 1] :
 		'A' + buf[i - 1] - 10));
 }
@@ -206,26 +206,26 @@ void dispatchCommands(){
 	case 13:
 		//Broadcast position received
 		if ((*(data.payload) == 'P') && (*(data.payload + 1) == 'O') && (*(data.payload + 2) == 'S')){
-			//Serial.print("Broadcast position received from "); printLLNumber(macAddr, HEX); Serial.println();
+			//DEBUG_SP("Broadcast position received from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
 			broadcastPositionCommand(data);
 		}
 		break;
 	case 3:
 		//Demand position received
 		if ((*(data.payload) == 'B') && (*(data.payload + 1) == 'R') && (*(data.payload + 2) == 'C')){
-			//Serial.print("Demand position received from "); printLLNumber(macAddr, HEX); Serial.println();
+			//DEBUG_SP("Demand position received from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
 			demandPositionCommand();
 		}
 		break;
 	case 8:
 		//Broadcast new target received
 		if ((*(data.payload) == 'N') && (*(data.payload + 1) == 'E') && (*(data.payload + 2) == 'W')){
-			//Serial.print("Broadcast new target received from "); printLLNumber(macAddr, HEX); Serial.println();
+			//DEBUG_SP("Broadcast new target received from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
 			newTargetCommand(data);
 		}
 		break;
 	default:
-		//Serial.print("Received unknown "); Serial.print(dataLen); Serial.print(" bytes from "); printLLNumber(macAddr, HEX); Serial.println();
+		//DEBUG_SP("Received unknown "); DEBUG_SP(dataLen); DEBUG_SP(" bytes from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
 		break;
 	}
 	removeFirstRxData();
