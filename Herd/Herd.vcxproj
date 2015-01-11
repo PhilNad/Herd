@@ -106,7 +106,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakeBuildCommandLine>nmake.exe all</NMakeBuildCommandLine>
     <NMakeCleanCommandLine>nmake.exe clean</NMakeCleanCommandLine>
-    <NMakeReBuildCommandLine>nmake.exe rebuil</NMakeReBuildCommandLine>
+    <NMakeReBuildCommandLine>nmake.exe rebuild</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <IncludePath>$(ProjectDir)\Headers\</IncludePath>
     <ReferencePath />
