@@ -174,9 +174,6 @@
     <ClInclude Include="Sources\XBeeDM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Decisions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sources\Decisions.h">
       <Filter>Header Files</Filter>
     </ClInclude>

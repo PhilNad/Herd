@@ -1,7 +1,9 @@
-#include "Arduino.h"
-
 #ifndef IRSENSOR_H
 #define IRSENSOR_H
+
+#include "Arduino.h"
+#include "DynSched.h"
+
 
 /* TO READ
 IR sensors should be on those pins:
@@ -50,5 +52,7 @@ short calculateSensorPattern();
 void refreshSensorsPattern();
 
 void triggerTaskAssociatedWithPattern();
+
+void setAssociatedFunction(short pattern, function f);
 
 #endif //IRSENSOR_H

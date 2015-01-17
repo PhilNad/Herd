@@ -1,5 +1,4 @@
 #include "Board.h"
-#include "Communication.h"
 
 //TODO: Dynamic memory allocation
 

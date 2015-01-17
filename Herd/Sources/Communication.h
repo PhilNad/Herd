@@ -1,9 +1,11 @@
-#include "Arduino.h"
-//Xbee Digimesh API mode
-#include "XBeeDM.h"
-
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
+
+#include "Arduino.h"
+#include "XBeeDM.h"
+#include "DynSched.h"
+#include "Commands.h"
+
 
 //These definitions allows us to write debug and release code without any overhead
 #ifdef DEBUG_VERBOSE

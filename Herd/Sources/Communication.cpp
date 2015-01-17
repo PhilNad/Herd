@@ -1,6 +1,4 @@
 #include "Communication.h"
-#include "DynSched.h"
-#include "Commands.h"
 
 //Xbee DigiMesh library object
 XBee xb;

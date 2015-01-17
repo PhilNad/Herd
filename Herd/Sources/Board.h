@@ -1,7 +1,8 @@
-#include "Arduino.h"
-
 #ifndef BOARD_H
 #define BOARD_H
+
+#include "Arduino.h"
+#include "Communication.h"
 
 //Default starting position for a bot
 #define STARTING_X 1

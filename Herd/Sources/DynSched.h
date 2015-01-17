@@ -1,7 +1,8 @@
-#include "Arduino.h"
-
 #ifndef DYNSCHED_H
 #define DYNSCHED_H
+
+#include "Arduino.h"
+#include "Communication.h"
 
 //Define an abstract 'function' type.
 typedef void(*function)();

@@ -25,25 +25,16 @@ README: For an unknown reason, the Teensyduino generated objects files are worki
 #include "Motion.h"
 //Everything related to space
 #include "Board.h"
+//Artificial Intelligence
+#include "Decisions.h"
 
 //Default tasks
 void createDefaultTasks(void){
-	//Create a task that will initialize the communication port
+	//Create a task that will initialize everything.
+	//To add a task that need to be executes at start, see initEverything() in Decisions
 	Task* task = newTask();
 	setPriority(task, PRIORITY_HIGH);
-	setFunction(task, initComPort);
-	addTask(task);
-
-	//Create a task that will initialize motors
-	task = newTask();
-	setPriority(task, PRIORITY_HIGH);
-	setFunction(task, initMotorPins);
-	addTask(task);
-
-	//Create a task that will initialize the main board
-	task = newTask();
-	setPriority(task, PRIORITY_HIGH);
-	setFunction(task, initBoard);
+	setFunction(task, initEverything);
 	addTask(task);
 
 	//Create a permament task that checks if we have Xbee Data ready to be interpreted and shout it back to the terminal.

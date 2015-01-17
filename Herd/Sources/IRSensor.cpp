@@ -1,6 +1,5 @@
-#include "Arduino.h"
 #include "IRSensor.h"
-#include "DynSched.h"
+
 
 //IR sensors current state
 bool isFrontSensorBlack = false;
@@ -47,10 +46,10 @@ short old_pattern = 0;
 //Last checked sensor, used to cycle sensors
 int lastRead = BACK_SENSOR;
 
-//Holds Tasks that are associated with patterns
-// task = associatedTask[pattern];
+//Holds functions that are associated with patterns
+// function = associatedTask[pattern];
 //Initialized by Decisions.cpp
-Task* associatedTask[16];
+function associatedTask[16];
 
 //Return the sensor that corresponds to the supplied pin. 
 //WARNING: Default case is FRONT_SENSOR.
@@ -194,10 +193,17 @@ short calculateSensorPattern(){
 	return result;
 }
 
-//Add the task associated with the current pattern in the list.
+//Add the function as a task associated with the current pattern in the list.
 void triggerTaskAssociatedWithPattern(short pattern){
-	Task* task = associatedTask[pattern];
+	Task* task = newTask();
+	setPriority(task, PRIORITY_HIGH);
+	setFunction(task, associatedTask[pattern]);
 	addTask(task);
+}
+
+//Associate a particular function to a pattern
+void setAssociatedFunction(short pattern, function f){
+	associatedTask[pattern] = f;
 }
 
 //Refresh the sensors pattern and, if needed, request task execution

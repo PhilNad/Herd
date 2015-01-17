@@ -1,8 +1,5 @@
 #include "DynSched.h"
 
-//For comGetPacket()
-#include "Communication.h"
-
 int HIGH_TASK_FLAG = LOW;
 
 Task headHighTask = { NULL, PRIORITY_HIGH, true, NULL };

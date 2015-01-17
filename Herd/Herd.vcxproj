@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Decisions.h" />
     <ClInclude Include="Headers\Arduino.h" />
     <ClInclude Include="Headers\arm_common_tables.h" />
     <ClInclude Include="Headers\arm_math.h" />
