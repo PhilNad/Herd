@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "IRSensor.h"
+#include "DynSched.h"
 
 //IR sensors current state
 bool isFrontSensorBlack = false;
@@ -40,7 +41,19 @@ int readingMinimumIndex = 0;
 int readingsMaximum[4][N_READINGS];
 int readingMaximumIndex = 0;
 
+//IR Sensors patterns holder for comparison purposes
+short old_pattern = 0;
 
+//Last checked sensor, used to cycle sensors
+int lastRead = BACK_SENSOR;
+
+//Holds Tasks that are associated with patterns
+// task = associatedTask[pattern];
+//Initialized by Decisions.cpp
+Task* associatedTask[16];
+
+//Return the sensor that corresponds to the supplied pin. 
+//WARNING: Default case is FRONT_SENSOR.
 int pinToSensor(int pin){
 	switch (pin){
 	case pinFrontSensor:
@@ -115,9 +128,6 @@ int getDelimiter(int sensor){
 	return delimiter;
 }
 
-//Last checked sensor, used to cycle sensors
-int lastRead = BACK_SENSOR;
-
 //Simple getter to publicly get current sensor state
 bool getSensorState(int sensor){
 	switch (sensor){
@@ -134,6 +144,7 @@ bool getSensorState(int sensor){
 	}
 }
 
+//Returns TRUE if the supplied pin number has analog capabilities on the Teensy 3.1 board
 bool isAnalogPin(int pinNumber){
 	switch (pinNumber){
 	case 14:
@@ -156,6 +167,46 @@ bool isAnalogPin(int pinNumber){
 	default:
 		return false;
 	}
+}
+
+/*
+Return the pattern of the sensors as a short int.
+Only the 4 least significant bits are used.
+A bit is set if the corresponding sensor is Black
+
+	Sensor		  | Bit
+	--------------------
+	FRONT_SENSOR	0
+	LEFT_SENSOR		1
+	RIGHT_SENSOR	2
+	BACK_SENSOR		3
+*/
+short calculateSensorPattern(){
+	short result = 0;
+	if (isFrontSensorBlack)
+		result += 1; //2^0
+	if (isLeftSensorBlack)
+		result += 2;//2^1
+	if (isRightSensorBlack)
+		result += 4;//2^2
+	if (isRightSensorBlack)
+		result += 8;//2^3
+	return result;
+}
+
+//Add the task associated with the current pattern in the list.
+void triggerTaskAssociatedWithPattern(short pattern){
+	Task* task = associatedTask[pattern];
+	addTask(task);
+}
+
+//Refresh the sensors pattern and, if needed, request task execution
+void refreshSensorsPattern(){
+	short sensorsPattern = calculateSensorPattern();
+	//If pattern changed, trigger task execution
+	if (old_pattern != sensorsPattern)
+		triggerTaskAssociatedWithPattern(sensorsPattern);
+	old_pattern = sensorsPattern;
 }
 
 //This should be registered as a task
@@ -197,8 +248,10 @@ void readIRSensor(){
 		break;
 	//We should never get here but if we do, make sure we dont fuck up. Calling function with an inappropriate pin would be dangerous.
 	default:
-		return;
+		break;
 	}
+	
+	refreshSensorsPattern();
 }
 
 //This function take roughly 122uS to execute

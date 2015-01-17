@@ -45,4 +45,10 @@ bool isOnBlackLineAnalog(int sensorPin);
 
 bool isOnBlackLineDigital(int sensorPin);
 
+short calculateSensorPattern();
+
+void refreshSensorsPattern();
+
+void triggerTaskAssociatedWithPattern();
+
 #endif //IRSENSOR_H
