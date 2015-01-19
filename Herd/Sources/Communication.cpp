@@ -205,7 +205,7 @@ void dispatchCommands(){
 		//Broadcast position received
 		if ((*(data.payload) == 'P') && (*(data.payload + 1) == 'O') && (*(data.payload + 2) == 'S')){
 			//DEBUG_SP("Broadcast position received from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
-			broadcastPositionCommand(data);
+			broadcastPositionCommand();
 		}
 		break;
 	case 3:
@@ -219,12 +219,13 @@ void dispatchCommands(){
 		//Broadcast new target received
 		if ((*(data.payload) == 'N') && (*(data.payload + 1) == 'E') && (*(data.payload + 2) == 'W')){
 			//DEBUG_SP("Broadcast new target received from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
-			newTargetCommand(data);
+			newTargetCommand();
 		}
 		break;
 	default:
 		//DEBUG_SP("Received unknown "); DEBUG_SP(dataLen); DEBUG_SP(" bytes from "); printLLNumber(macAddr, HEX); DEBUG_SPL();
+		removeFirstRxData();
 		break;
 	}
-	removeFirstRxData();
+	
 }

@@ -7,7 +7,8 @@
 
 //POS command
 //Parse the payload and update the robots position table
-void broadcastPositionCommand(Rx_data data){
+void broadcastPositionCommand(){
+	Rx_data data = getFirstRxData();
 	uint64_t macAddr	= data.macAddr;
 	uint8_t dataLen		= data.payloadSize;
 	uint8_t* payload	= data.payload;
@@ -67,6 +68,8 @@ void broadcastPositionCommand(Rx_data data){
 	else{
 		DEBUG_SPL("ERROR: Created bot cannot be found.");
 	}
+	//Remove treated data from the list
+	removeFirstRxData();
 }
 
 //BRC command
@@ -93,7 +96,8 @@ void demandPositionCommand(){
 
 //NEW command
 //Update table of targets
-void newTargetCommand(Rx_data data){
+void newTargetCommand(){
+	Rx_data data = getFirstRxData();
 	uint8_t* payload	= data.payload;
 	char target_x_position_array[3] = { *(payload + 4), *(payload + 5), 0 };
 	char target_y_position_array[3] = { *(payload + 6), *(payload + 7), 0 };
@@ -111,4 +115,7 @@ void newTargetCommand(Rx_data data){
 		addTarget(target_position);
 	}
 	DEBUG_SP("Discovered target at "); DEBUG_SP(target_position.x); DEBUG_SP(":"); DEBUG_SPL(target_position.y);
+
+	//Remove treated data from the list
+	removeFirstRxData();
 }

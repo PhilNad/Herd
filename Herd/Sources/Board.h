@@ -5,8 +5,8 @@
 #include "Communication.h"
 
 //Default starting position for a bot
-#define STARTING_X 1
-#define STARTING_Y 1
+#define STARTING_X 0
+#define STARTING_Y 0
 
 //Size of the space
 #define X_SIZE 5
@@ -50,6 +50,8 @@ short searchTarget(Point position);
 void removeTarget(uint16_t index);
 
 //Related to other bots
+Bot getNthBot(short n);
+short getNumberOfBots();
 unsigned short addBot(Bot bot);
 void removeBot(uint16_t index);
 short getBotFromMAC(uint64_t macAddr);

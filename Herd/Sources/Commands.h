@@ -8,10 +8,10 @@
 
 
 //POS command
-void broadcastPositionCommand(Rx_data data);
+void broadcastPositionCommand();
 //BRC command
 void demandPositionCommand();
 //NEW command
-void newTargetCommand(Rx_data data);
+void newTargetCommand();
 
 #endif //COMMANDS_H

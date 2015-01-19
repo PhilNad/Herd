@@ -25,6 +25,8 @@ README: For an unknown reason, the Teensyduino generated objects files are worki
 #include "Motion.h"
 //Everything related to space
 #include "Board.h"
+//Commands
+#include "Commands.h"
 //Artificial Intelligence
 #include "Decisions.h"
 

@@ -50,6 +50,14 @@ void initBoard(){
 		setCaseFree(*c);
 }
 
+Bot getNthBot(short n){
+	return bots[n];
+}
+
+short getNumberOfBots(){
+	return number_of_bots;
+}
+
 //Add a recently discovered target to the table of free targets
 unsigned short addTarget(Point position){
 	freeTargets[number_of_free_targets] = position;
@@ -156,6 +164,9 @@ Case getCase(Point point){
 
 //Return true if the case is free of any obect
 bool isCaseFree(uint16_t x, uint16_t y){
+	//If the case is a border, its not 'free'
+	//TODO: Secure other functions.
+	if (x < 0 || y < 0 || x >= X_SIZE || y >= Y_SIZE) return false;
 	return Board[x][y].isFree;
 }
 //Return true if the case is free of any obect

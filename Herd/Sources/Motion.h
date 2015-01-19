@@ -1,7 +1,8 @@
-#include "Arduino.h"
-
 #ifndef MOTIOND_H
 #define MOTION_H
+
+#include "Arduino.h"
+
 
 //MCU pins connected to channels pins
 //TODO change correct pins for v0.2
