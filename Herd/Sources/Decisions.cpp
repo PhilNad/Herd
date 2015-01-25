@@ -4,7 +4,7 @@
 //Will take care of all decision-making processes most notably when we will need to move through the board.
 
 //No operation
-void doNothing(){ return; }
+void doNothing(){}
 
 //Initialize the functions associated with sensors patterns
 void initAssociatedFunctions(){
@@ -24,20 +24,9 @@ void initEverything(){
 	initAssociatedFunctions();
 }
 
-/*
-How to choose on which case to move?
-
-1.	Eliminate all non-free cases from choices.
-2.	From all choices that are left, choose the one that would get us closer to our target.
-		If no choice would get us closer to our target, go to (3)
-3.	Calculate the sum of other bots directions. Choose the choice that would be the more
-		toward that resulting direction.
-4.	Move to the chosen choice.
-*/
-
 Direction bot_to_target(Bot b){
-	Point position	= b.position;
-	Point target	= b.target;
+	Point position = b.position;
+	Point target = b.target;
 
 	Direction d;
 	d.x = target.x - position.x;
@@ -45,12 +34,13 @@ Direction bot_to_target(Bot b){
 	return d;
 }
 
+//Calculate the vector that represent the summ of all other bots directions
 Direction sum_bots_directions(){
 	short number_of_bots = getNumberOfBots();
 
 	Direction sum;
 
-	for (short i = 0; i < number_of_bots;++i){
+	for (short i = 0; i < number_of_bots; ++i){
 		Bot b = getNthBot(i);
 		sum.x += bot_to_target(b).x;
 		sum.y += bot_to_target(b).y;
@@ -66,65 +56,84 @@ Direction get_opposite(Direction d){
 	return r;
 }
 
-//Choose the best point we should move to
-Point nextMove(){
-	Bot self = getMyself();
-	
-	Point result;
-	result.x = self.position.x;
-	result.y = self.position.y;
+//Add two points together
+//TODO: put that in the Point struct as an operator
+Point addPoints(Point a, Point b){
+	Point p;
+	p.x = a.x + b.x;
+	p.y = a.y + b.y;
+	return p;
+}
 
+//Calculate the modulus of a vector
+double modulus(Direction d){
+	return sqrt(d.x*d.x + d.y*d.y);
+}
+
+//Calculate the similarity between two vectors
+//Least similar: -1 ; More similar:1
+double cos_similarity(Direction d, Direction e){
+	double dotProduct = d.x*e.x + d.y*e.y;
+	double mod_multiplied = modulus(d)*modulus(e);
+	if (mod_multiplied == 0)
+		mod_multiplied = 0.0001;
+	return dotProduct / mod_multiplied;
+}
+
+//Return the point around current position that we would need to move on to follow d direction.
+Point direction_optimized_point(Direction d){
+	//Current bot
+	Bot self = getMyself();
 	//This is all the possible different moves
 	Point choices[5] = {
-		{	self.position.x		,	self.position.y		},
-		{	self.position.x - 1	,	self.position.y		},
-		{	self.position.x + 1 ,	self.position.y		},
-		{	self.position.x		,	self.position.y - 1 },
-		{	self.position.x		,	self.position.y + 1 },
+		{ self.position.x, self.position.y },	  //No move
+		{ self.position.x - 1, self.position.y }, //Move left
+		{ self.position.x + 1, self.position.y }, //Move right
+		{ self.position.x, self.position.y - 1 }, //Move down
+		{ self.position.x, self.position.y + 1 }, //Move up
 	};
 
-	//1)
-	for (Point c : choices){
-		if (!isCaseFree(c.x, c.y))
-			c.x = -1;
-			c.y = -1;
-	}
+	//Best choice as an index of choices
+	int best_choice = 0;
+	double best_choice_cos_sim = -2.0;
 
-	//2)
-	Direction selfDir = bot_to_target(self);
-	//Initialized to our current position
-	auto shortestDistance = abs(selfDir.x) + abs(selfDir.y);
+	//Cycle through free cases and find the optimal one
+	for (int i = 0; i < 5; ++i){
+		if (isCaseFree(choices[i].x, choices[i].y)){
+			Direction e;
+			e.x = choices[i].x;
+			e.y = choices[i].y;
 
-	for (Point c : choices){
-		if (c.x != -1 && c.y != -1){
-			auto dist = abs(self.target.x - c.x) + abs(self.target.y - c.y);
-			if (dist < shortestDistance)
-				shortestDistance	= dist;
-				result.x = c.x;
-				result.y = c.y;
-
+			double similarity = cos_similarity(d, e);
+			if (similarity > best_choice_cos_sim){
+				best_choice			= i;
+				best_choice_cos_sim = similarity;
+			}
 		}
 	}
+	return choices[best_choice];
+}
 
-	//3)
-	if (result.x == self.position.x && result.y == self.position.y){
-		Direction s = sum_bots_directions();
-		if (abs(s.x) < abs(s.y)){
-			//Move in s.x direction
-			result.y = self.position.y;
-			if (s.x >= 0)
-				result.x = self.position.x + 1;
-			else
-				result.x = self.position.x - 1;
-		}
-		else{
-			//Move in s.y direction
-			result.x = self.position.x;
-			if (s.y >= 0)
-				result.y = self.position.y + 1;
-			else
-				result.y = self.position.y - 1;
-		}
-	}
+//1. Remove occupied cases from list
+//2. Initialize default result to move toward general bots direction
+//3. Try to find one that will get us nearer our target.
+Point nextMove(){
+	//Current bot
+	Bot self = getMyself();
+
+	//Our current direction
+	Direction our_direction = bot_to_target(self);
+
+	//General bots direction
+	Direction sum_directions = sum_bots_directions();
+
+	//Initialized to optimized case for general direction
+	Point result = direction_optimized_point(sum_directions);
+
+	//Try to find a move that would get us closer to our target
+	Point best_move = direction_optimized_point(our_direction);
+	if (best_move.x != self.position.x && best_move.y != self.position.y)
+		result = best_move;
+
 	return result;
 }
