@@ -24,6 +24,31 @@ void initEverything(){
 	initAssociatedFunctions();
 }
 
+//Decide what we should do depending on the context
+void actionDecision(){
+	//Are we associated with a target?
+	Bot myself = getMyself();
+	if (myself.target.x > 0 && myself.target.y > 0){
+		//Are we in the process of moving
+		if (current_moving_state == MOVING){
+			//Set our next stop condition
+			//Start our next motor move
+		}
+		else{
+			//Compute next move
+		}
+	}
+	else{
+		//Is there any free target?
+		if (hasFreeTarget()){
+			//Associate with a target and announce it.
+			Point target	= getTarget();
+			myself.target	= target;
+			demandPositionCommand();
+		}
+	}
+}
+
 Direction bot_to_target(Bot b){
 	Point position = b.position;
 	Point target = b.target;

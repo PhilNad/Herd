@@ -19,8 +19,17 @@ typedef struct direction{
 	};
 }Direction;
 
+typedef enum _moving_state{
+	WAITING,
+	MOVING
+}moving_state;
+
+moving_state current_moving_state = WAITING;
+
 void initAssociatedTasks();
 
 void initEverything();
+
+void actionDecision();
 
 #endif //DECISIONS_H

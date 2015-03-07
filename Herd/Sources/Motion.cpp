@@ -111,3 +111,32 @@ void stopMotors(){
 	analogWrite(RIGHT_MOTOR1,	255);
 	analogWrite(RIGHT_MOTOR2,	255);
 }
+
+class stopCondition{
+	unsigned char conditions;
+public:
+	stopCondition() : conditions(0){};
+	enum change{whiteToBlack,blackToWhite};
+	void addCondition(int nSensor, change c){
+		if (c == change::whiteToBlack){
+			//Modify bit 0-3, set nSensor bit
+			conditions |= 1 << nSensor;
+		}
+		else{
+			//Modify bit 4-7
+			conditions |= 1 << (nSensor+4);
+		}
+	}
+
+	void remCondition(int nSensor, change c){
+		if (c == change::whiteToBlack){
+			//Modify bit 0-3, clear nSensor bit
+			conditions &= ~(1 << nSensor);
+		}
+		else{
+			//Modify bit 4-7
+			conditions &= ~(1 << (nSensor+4));
+		}
+	}
+	
+};

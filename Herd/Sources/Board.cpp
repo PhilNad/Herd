@@ -58,6 +58,14 @@ short getNumberOfBots(){
 	return number_of_bots;
 }
 
+//Used to know if free targets are available
+bool hasFreeTarget(){
+	if (number_of_free_targets > 0)
+		return true;
+	else
+		return false;
+}
+
 //Add a recently discovered target to the table of free targets
 unsigned short addTarget(Point position){
 	freeTargets[number_of_free_targets] = position;
@@ -66,11 +74,10 @@ unsigned short addTarget(Point position){
 }
 
 //Get the first target in our FIFO list and remove it from the list
+//If no target is available, return point(0,0) which is off-board
 Point getTarget(){
 	Point target = freeTargets[0];
-	for (int i = 1; i < number_of_free_targets; i++){
-		freeTargets[i - 1] = freeTargets[i];
-	}
+	removeTarget(0);
 	return target;
 }
 
@@ -84,9 +91,13 @@ short searchTarget(Point position){
 }
 
 //Remove a target from the list using its index
-void removeTarget(uint16_t index){
-	for (short i = index; i < number_of_free_targets; i++){
-		freeTargets[i] = freeTargets[i + 1];
+void removeTarget(unsigned short index){
+	Point target = freeTargets[index];
+	if (number_of_free_targets && target.x > 0 && target.y > 0){
+		for (short i = index; i < number_of_free_targets; i++){
+			freeTargets[i] = freeTargets[i + 1];
+		}
+		--number_of_free_targets;
 	}
 }
 

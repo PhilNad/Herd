@@ -48,6 +48,7 @@ unsigned short addTarget(Point position);
 Point getTarget();
 short searchTarget(Point position);
 void removeTarget(uint16_t index);
+bool hasFreeTarget();
 
 //Related to other bots
 Bot getNthBot(short n);

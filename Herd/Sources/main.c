@@ -59,6 +59,13 @@ void createDefaultTasks(void){
 	setPermanent(task, true);
 	setFunction(task, pollCommands);
 	addTask(task);
+
+	//Create a permanent task that decide what is the next action
+	task = newTask();
+	setPriority(task, PRIORITY_NORMAL);
+	setPermanent(task, true);
+	setFunction(task, actionDecision);
+	addTask(task);
 }
 
 int main(){
