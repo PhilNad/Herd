@@ -26,6 +26,15 @@
 	1		1		PWM		1		Backward left
 */
 
+MotorAction current_motor_action = MotorAction::STOP;
+
+//Return true is motors are not stopped
+bool isMoving(){
+	if (current_motor_action != STOP)
+		return true;
+	return false;
+}
+
 //Return the PWM associated with a particular percentage of full speed.
 //0 means stop. 100 means full speed
 int scaleSpeed(int percent){
@@ -58,6 +67,7 @@ void goForward(int speed){
 	analogWrite(LEFT_MOTOR2,	pwm);
 	analogWrite(RIGHT_MOTOR1,	255);
 	analogWrite(RIGHT_MOTOR2,	pwm);
+	current_motor_action = MotorAction::FORWARD;
 }
 
 //Speed must be between 0 and 100 percent of full speed
@@ -67,6 +77,7 @@ void goForwardRight(int speed){
 	analogWrite(LEFT_MOTOR2, pwm);
 	analogWrite(RIGHT_MOTOR1, 255);
 	analogWrite(RIGHT_MOTOR2, 255);
+	current_motor_action = MotorAction::FORWARD_RIGHT;
 }
 
 //Speed must be between 0 and 100 percent of full speed
@@ -76,6 +87,7 @@ void goForwardLeft(int speed){
 	analogWrite(LEFT_MOTOR2, 255);
 	analogWrite(RIGHT_MOTOR1, 255);
 	analogWrite(RIGHT_MOTOR2, pwm);
+	current_motor_action = MotorAction::FORWARD_LEFT;
 }
 
 //Speed must be between 0 and 100 percent of full speed
@@ -85,6 +97,7 @@ void goBackward(int speed){
 	analogWrite(LEFT_MOTOR2,	255);
 	analogWrite(RIGHT_MOTOR1,   pwm);
 	analogWrite(RIGHT_MOTOR2,	255);
+	current_motor_action = MotorAction::BACKWARD;
 }
 
 //Speed must be between 0 and 100 percent of full speed
@@ -94,6 +107,7 @@ void goBackwardRight(int speed){
 	analogWrite(LEFT_MOTOR2, 255);
 	analogWrite(RIGHT_MOTOR1, 255);
 	analogWrite(RIGHT_MOTOR2, 255);
+	current_motor_action = MotorAction::BACKWARD_RIGHT;
 }
 
 //Speed must be between 0 and 100 percent of full speed
@@ -103,6 +117,7 @@ void goBackwardLeft(int speed){
 	analogWrite(LEFT_MOTOR2, 255);
 	analogWrite(RIGHT_MOTOR1, pwm);
 	analogWrite(RIGHT_MOTOR2, 255);
+	current_motor_action = MotorAction::BACKWARD_LEFT;
 }
 
 void stopMotors(){
@@ -110,33 +125,62 @@ void stopMotors(){
 	analogWrite(LEFT_MOTOR2,	255);
 	analogWrite(RIGHT_MOTOR1,	255);
 	analogWrite(RIGHT_MOTOR2,	255);
+	current_motor_action = MotorAction::STOP;
 }
 
-class stopCondition{
-	unsigned char conditions;
-public:
-	stopCondition() : conditions(0){};
-	enum change{whiteToBlack,blackToWhite};
-	void addCondition(int nSensor, change c){
-		if (c == change::whiteToBlack){
-			//Modify bit 0-3, set nSensor bit
-			conditions |= 1 << nSensor;
-		}
-		else{
-			//Modify bit 4-7
-			conditions |= 1 << (nSensor+4);
-		}
+//Test if the nth bit of data is set
+bool is_set(unsigned char data, short n){
+	return (data & (1 << n));
+}
+
+//Set the nth bit of data
+unsigned char clear(unsigned char data, short n){
+	data = (data & ~(1 << n));
+	return data;
+}
+
+//Clear the nth bit of data
+unsigned char set(unsigned char data, short n){
+	return (data | (1 << n));
+}
+
+
+void stopCondition::addSensorTransition(int nSensor, change c){
+	if (c == change::whiteToBlack){
+		//Modify bit 0-3, set nSensor bit
+		condition = set(condition, nSensor);
+	}
+	else{
+		//Modify bit 4-7
+		condition = set(condition, nSensor + 4);
+	}
+}
+
+void stopCondition::remSensorTransition(int nSensor, change c){
+	if (c == change::whiteToBlack){
+		//Modify bit 0-3, clear nSensor bit
+		condition = clear(condition, nSensor);
+	}
+	else{
+		//Modify bit 4-7
+		condition = clear(condition, nSensor + 4);
+	}
+}
+
+short stopCondition::findPatternToMeetCondition(){
+	short old_pattern = calculateSensorPattern();
+	short new_pattern = 0;
+
+	for (short i = 0; i < 4; i++){
+		//Get all needed bits to computer algorithm
+		short old_bit = is_set(old_pattern, i);
+		short sc_b2w_bit = is_set(condition, i + 4);
+		short sc_w2b_bit = is_set(condition, i);
+
+		//Find needed bit for coherance
+		if ((old_bit - sc_b2w_bit + sc_w2b_bit) > 0)
+			new_pattern = set(new_pattern, i);
 	}
 
-	void remCondition(int nSensor, change c){
-		if (c == change::whiteToBlack){
-			//Modify bit 0-3, clear nSensor bit
-			conditions &= ~(1 << nSensor);
-		}
-		else{
-			//Modify bit 4-7
-			conditions &= ~(1 << (nSensor+4));
-		}
-	}
-	
-};
+	return new_pattern;
+}

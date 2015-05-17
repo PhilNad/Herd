@@ -3,6 +3,8 @@
 
 //Will take care of all decision-making processes most notably when we will need to move through the board.
 
+
+
 //No operation
 void doNothing(){}
 
@@ -29,13 +31,20 @@ void actionDecision(){
 	//Are we associated with a target?
 	Bot myself = getMyself();
 	if (myself.target.x > 0 && myself.target.y > 0){
-		//Are we in the process of moving
-		if (current_moving_state == MOVING){
-			//Set our next stop condition
-			//Start our next motor move
-		}
-		else{
-			//Compute next move
+		//If we are not moving, its time to generate new move
+		if (!isMoving()){
+			//Get our next checkpoint
+			Point cp = nextMove();
+			//Find corresponding motor action
+			MotorAction ma = correspondingAction(cp);
+			//Generate appropriate stop condition
+			stopCondition sc = generateForMotorAction(ma);
+			//Get ir sensor pattern
+			short pattern = sc.findPatternToMeetCondition();
+			//Associate pattern with stop action
+			setAssociatedFunction(pattern, stopMotors);
+			//Start movement at 33% of full speed
+			executeMotorAction(ma, 33);
 		}
 	}
 	else{
@@ -161,4 +170,45 @@ Point nextMove(){
 		result = best_move;
 
 	return result;
+}
+
+//Find which action would correspond to moving to the submitted Point
+MotorAction correspondingAction(Point checkpoint){
+	//Current bot
+	Bot self = getMyself();
+	if (checkpoint.x == (self.position.x - 1) && checkpoint.y == (self.position.y - 0))//Move left
+		return MotorAction::FORWARD_LEFT;
+	if (checkpoint.x == (self.position.x + 1) && checkpoint.y == (self.position.y - 0))//Move right
+		return MotorAction::FORWARD_RIGHT;
+	if (checkpoint.x == (self.position.x - 0) && checkpoint.y == (self.position.y - 1))//Move down
+		return MotorAction::BACKWARD;
+	if (checkpoint.x == (self.position.x - 0) && checkpoint.y == (self.position.y + 1))//Move up
+		return MotorAction::FORWARD;
+	return MotorAction::STOP;
+}
+
+//Generate a stop condition based on the movement that will be done.
+//Does a back sensor transition from white to black would always work?
+stopCondition generateForMotorAction(MotorAction ma){
+	stopCondition sc;
+	sc.addSensorTransition(BACK_SENSOR, sc.whiteToBlack);
+	return sc;
+}
+
+//Start a motor action at percentage speed
+void executeMotorAction(MotorAction ma, int speed){
+	switch (ma){
+	case MotorAction::FORWARD:
+		goForward(speed);
+	case MotorAction::FORWARD_RIGHT:
+		goForwardRight(speed);
+	case MotorAction::FORWARD_LEFT:
+		goForwardLeft(speed);
+	case MotorAction::BACKWARD:
+		goBackward(speed);
+	case MotorAction::BACKWARD_RIGHT:
+		goBackwardRight(speed);
+	case MotorAction::BACKWARD_LEFT:
+		goBackwardLeft(speed);
+	}
 }
