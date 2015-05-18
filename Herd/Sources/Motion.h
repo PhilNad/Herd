@@ -45,6 +45,11 @@ void goBackwardRight(int speed);
 void goBackwardLeft(int speed);
 void stopMotors();
 
+//Bitwise operations
+bool is_set(unsigned char data, short n);
+unsigned char clear(unsigned char data, short n);
+unsigned char set(unsigned char data, short n);
+
 class stopCondition{
 	unsigned char condition;
 public:
@@ -60,6 +65,9 @@ public:
 	//Given the last sensor pattern,
 	//Find the pattern needed so the stop condition is met
 	short findPatternToMeetCondition();
+
+	//Make the stop condition actually stop motors
+	void setStop();
 };
 
 

@@ -24,6 +24,10 @@ void initAssociatedTasks();
 
 void initEverything();
 
+void initStabilization();
+
+void stabilize();
+
 void actionDecision();
 
 Point nextMove();

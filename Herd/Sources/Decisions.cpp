@@ -13,6 +13,7 @@ void initAssociatedFunctions(){
 	for (int i = 0; i <= 16; ++i){
 		setAssociatedFunction(i, doNothing);
 	}
+	initStabilization();
 }
 
 //Is used to initialize everything at the start of the program
@@ -24,6 +25,44 @@ void initEverything(){
 	initBoard();
 	//Intern
 	initAssociatedFunctions();
+}
+
+//Sets associated functions for right and left IR sensors
+//These sensors are used for stabilization
+//If the sides sensors are not in the same state, the robot needs to be stabilized
+void initStabilization(){
+	setAssociatedFunction(2, stabilize);
+	setAssociatedFunction(3, stabilize);
+	setAssociatedFunction(4, stabilize);
+	setAssociatedFunction(5, stabilize);
+	setAssociatedFunction(10, stabilize);
+	setAssociatedFunction(11, stabilize);
+	setAssociatedFunction(12, stabilize);
+	setAssociatedFunction(13, stabilize);
+}
+
+//Executed when lateral sensors are not in the same state
+void stabilize(){
+	unsigned char pattern = calculateSensorPattern();
+	stopCondition sc;
+	MotorAction ma;
+	//Leaning to the left
+	if (is_set(pattern, RIGHT_SENSOR)){
+		//This means: "Go forward right until the left sensor is transitioning from white to black"
+		ma = FORWARD_RIGHT;
+		sc.addSensorTransition(LEFT_SENSOR, sc.whiteToBlack);
+	}
+	else{
+		//Leaning to the right
+		if (is_set(pattern, LEFT_SENSOR)){
+			//This means: "Go forward left until the right sensor is transitioning from white to black"
+			ma = FORWARD_LEFT;
+			sc.addSensorTransition(RIGHT_SENSOR, sc.whiteToBlack);
+		}
+	}
+	sc.setStop();
+	//Make the movement
+	executeMotorAction(ma, 33);
 }
 
 //Decide what we should do depending on the context
@@ -39,10 +78,8 @@ void actionDecision(){
 			MotorAction ma = correspondingAction(cp);
 			//Generate appropriate stop condition
 			stopCondition sc = generateForMotorAction(ma);
-			//Get ir sensor pattern
-			short pattern = sc.findPatternToMeetCondition();
 			//Associate pattern with stop action
-			setAssociatedFunction(pattern, stopMotors);
+			sc.setStop();
 			//Start movement at 33% of full speed
 			executeMotorAction(ma, 33);
 		}
@@ -188,10 +225,12 @@ MotorAction correspondingAction(Point checkpoint){
 }
 
 //Generate a stop condition based on the movement that will be done.
-//Does a back sensor transition from white to black would always work?
 stopCondition generateForMotorAction(MotorAction ma){
 	stopCondition sc;
-	sc.addSensorTransition(BACK_SENSOR, sc.whiteToBlack);
+	if (ma == BACKWARD || ma == BACKWARD_RIGHT || ma == BACKWARD_LEFT)
+		sc.addSensorTransition(BACK_SENSOR, sc.whiteToBlack);
+	if (ma == FORWARD || ma == FORWARD_RIGHT || ma == FORWARD_LEFT)
+		sc.addSensorTransition(FRONT_SENSOR, sc.whiteToBlack);
 	return sc;
 }
 

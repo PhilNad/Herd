@@ -184,3 +184,8 @@ short stopCondition::findPatternToMeetCondition(){
 
 	return new_pattern;
 }
+
+void stopCondition::setStop(){
+	short pattern = findPatternToMeetCondition();
+	setAssociatedFunction(pattern, stopMotors);
+}
